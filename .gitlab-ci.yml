@@ -1,0 +1,14 @@
+pages:
+  stage: deploy
+  image: ubuntu
+  script:
+    - echo -e '#!/bin/sh\n\necho "<html><title>Jan Gorecki - R talks</title><body>"\nsed "s/^.*/<a href=\"&\">&<\/a><br\/>/"\necho "</body></html>"' > make-index.sh
+    - chmod +x make-index.sh
+    - ls -1 */*.{html,pdf} | ./make-index.sh > index.html
+    - mkdir .public
+    - cp -R $(ls -p | grep "/") .public
+    - mv .public public
+    - mv index.html public
+  artifacts:
+    paths:
+      - public
